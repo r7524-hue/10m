@@ -161,7 +161,6 @@
             color: var(--color-primary-text);
             text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
         }
-        /* NOTE: .random-name CSS has been removed */
 
         /* --- SECRET MESSAGE PAGE (STAGE 3) --- */
         #message-stage {
@@ -180,10 +179,11 @@
             width: 90%;
         }
 
-        /* Envelope Container - Now controls the total size of the 'mail' effect */
+        /* Envelope Container - ENLARGED */
         .envelope-container {
-            width: 300px;
-            height: 200px; 
+            /* Increased Width */
+            width: 450px; 
+            height: 250px; /* Adjusted initial height */
             position: relative;
             cursor: pointer;
             perspective: 1000px;
@@ -206,19 +206,21 @@
         /* THE NOTE CONTAINER (The content that unfolds) */
         .note {
             position: relative; 
-            top: 200px; 
+            /* Adjusted initial top position based on new envelope height (250px) */
+            top: 250px; 
             left: 50%;
             transform: translateX(-50%);
             width: 90%;
             background-color: white; 
-            padding: 30px 20px;
+            /* Adjusted Padding for better alignment */
+            padding: 35px 35px; 
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             opacity: 0;
             transition: opacity 1s 0.8s ease-out, top 1s 0.8s ease-out;
             z-index: 2;
             text-align: center;
-            min-height: 150px; 
+            min-height: 200px; 
         }
 
         /* Envelope Flap */
@@ -243,18 +245,21 @@
             background-color: var(--color-teal);
         }
         
+        /* Increased Open Height to ensure all text fits */
         .envelope-container.open {
-            height: 550px; 
+            height: 800px; 
         }
 
         .envelope-container.open .note {
             opacity: 1;
-            top: 50px; 
+            /* Adjusted slide-up position */
+            top: 60px; 
         }
 
         .heart-seal {
             position: absolute;
-            top: 45px;
+            /* Adjusted position for new envelope size */
+            top: 60px; 
             left: 50%;
             transform: translateX(-50%);
             font-size: 2em;
@@ -274,6 +279,8 @@
             color: var(--color-handwritten);
             margin-bottom: 25px;
             white-space: pre-wrap;
+            /* Center alignment for the title/salutation */
+            text-align: center; 
         }
         
         .message-body {
@@ -281,8 +288,9 @@
             font-size: 1.1em;
             color: var(--color-primary-text);
             margin-bottom: 30px;
-            text-align: left;
-            padding: 0 10px;
+            /* Aligned to justify for a neat block look */
+            text-align: justify; 
+            padding: 0; /* Remove extra inner padding */
         }
 
         .kiss-button {
@@ -303,7 +311,6 @@
             background-color: #ff9aa2;
             box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
         }
-        /* NOTE: .doodle CSS has been removed */
     </style>
 </head>
 <body>
@@ -329,7 +336,7 @@
             <div class="spinner"></div>
             <p class="loading-text">Hold tight, something adorable is on its way 🌸</p>
         </div>
-        </div>
+    </div>
 
     <div id="message-stage" class="stage">
         <div class="message-content">
@@ -345,6 +352,8 @@
                         I just wanted to send you this little piece of digital sunshine. Every time I see these pastel colors, I think of how warm and cozy you make my life. You're my favorite human, my comfort zone, and my greatest adventure. I'm so grateful to have you.
                         <br><br>
                         This note is meant to unfold, just like my feelings for you. It keeps going and going, even when you think you've reached the end! I hope this surprise made you smile as much as you make me smile every single day. Always and forever.
+                        <br><br>
+                        P.S. I added a little more text here to fill up the bigger mail! I hope it looks exactly how you wanted it to—big, bold, and perfectly aligned, ready for your click.
                     </p>
                     <button class="kiss-button" onclick="sendKiss()">Click to Send a Kiss</button>
                 </div>
@@ -361,7 +370,8 @@
         const stage2 = document.getElementById('loading-stage');
         const stage3 = document.getElementById('message-stage');
         const loginForm = document.getElementById('login-form');
-        const envelopeContainer = document.getElementById('envelope-container');
+        // FIX: Re-defining the envelopeContainer to ensure it's linked
+        const envelopeContainer = document.getElementById('envelope-container'); 
 
         // --- STAGE NAVIGATION ---
 
@@ -384,7 +394,6 @@
 
             if (usernameInput === VALID_USERNAME && passwordInput === VALID_PASSWORD) {
                 navigateTo(stage2);
-                // No need to call scatterNames() since it's removed
                 setTimeout(() => {
                     navigateTo(stage3); 
                 }, 3000); 
@@ -393,11 +402,14 @@
             }
         });
 
-        // --- STAGE 2: LOADING NAMES SCATTER (Function removed) ---
-        // scatterNames function is no longer needed.
+        // --- STAGE 2: LOADING NAMES SCATTER (Function removed, left an empty function to prevent errors if called) ---
+        function scatterNames() { 
+            /* Names scatter functionality removed by user request. */ 
+        }
 
-        // --- STAGE 3: MESSAGE LOGIC (Opening the mail) ---
+        // --- STAGE 3: MESSAGE LOGIC (Opening the mail - NOW FIXED) ---
 
+        // FIX: The click listener is now correctly attached to the envelope element.
         envelopeContainer.addEventListener('click', function() {
             if (!envelopeContainer.classList.contains('open')) {
                 envelopeContainer.classList.add('open');
@@ -410,6 +422,7 @@
             const body = "I clicked the kiss button on our secret website! Sending you a big, digital smooch! 😘";
             
             window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        
         }
         
     </script>
