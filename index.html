@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Cozy Secret</title>
+    <style>
+        /* --- GLOBAL STYLES & FONT --- */
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Quicksand:wght@400;600;700&display=swap');
+
+        :root {
+            --color-pink: #FFC0CB; /* Soft Pink */
+            --color-lavender: #E6E6FA; /* Lavender */
+            --color-teal: #B0E0E6; /* Light Teal Green */
+            --color-cream: #FFFDD0; /* Cream */
+            --color-primary-text: #6A5ACD; /* Slate Blue for contrast */
+            --color-handwritten: #50C878; /* Emerald Green for a pen effect */
+            --shadow-soft: 0 8px 16px rgba(106, 90, 205, 0.2);
+            --shadow-inset: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+            --border-radius-lg: 25px;
+            --border-radius-sm: 15px;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Quicksand', sans-serif;
+            color: var(--color-primary-text);
+            overflow: hidden; 
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            line-height: 1.6;
+        }
+
+        /* --- STAGE CONTAINER & TRANSITIONS --- */
+        .stage {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            pointer-events: none;
+        }
+
+        .stage.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* --- LOGIN PAGE (STAGE 1) --- */
+        #login-stage {
+            background: linear-gradient(135deg, var(--color-pink) 0%, var(--color-lavender) 100%);
+        }
+
+        .floating-heart {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 20px;
+            animation: float-up linear infinite;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        @keyframes float-up {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-soft);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .login-card h1 {
+            color: var(--color-primary-text);
+            font-size: 2em;
+            margin-bottom: 30px;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 2px solid var(--color-lavender);
+            border-radius: var(--border-radius-sm);
+            background-color: var(--color-cream);
+            box-shadow: var(--shadow-inset);
+            box-sizing: border-box;
+            font-size: 1em;
+            color: var(--color-primary-text);
+            transition: border-color 0.3s ease;
+        }
+
+        .login-input:focus {
+            outline: none;
+            border-color: var(--color-pink);
+            background-color: white;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(90deg, #ff9aa2, #ffb7b2); /* Candy-colored gradient */
+            color: white;
+            border: none;
+            border-radius: var(--border-radius-sm);
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(255, 154, 162, 0.5);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .login-button:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 6px 12px rgba(255, 154, 162, 0.7);
+        }
+
+        /* --- LOADING PAGE (STAGE 2) --- */
+        #loading-stage {
+            background: linear-gradient(135deg, var(--color-lavender) 0%, var(--color-teal) 100%);
+        }
+
+        .loading-content {
+            text-align: center;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.3); /* Semi-transparent white card */
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-soft);
+            z-index: 10;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 8px solid var(--color-cream);
+            border-top: 8px solid var(--color-pink);
+            border-radius: 50%;
+            animation: spin 1.5s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            margin: 0 auto 20px;
+            box-shadow: inset 0 0 0 5px var(--color-teal);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 1.5em;
+            color: var(--color-primary-text); /* Use a darker color for visibility */
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+        }
+
+        .random-name {
+            position: absolute;
+            color: var(--color-primary-text); 
+            opacity: 0.8; /* Slightly less opaque */
+            font-size: 1.1em;
+            padding: 5px 10px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.5); /* Background for visibility */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            animation: name-float 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes name-float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(var(--x), var(--y)); }
+        }
+
+        /* --- SECRET MESSAGE PAGE (STAGE 3) --- */
+        #message-stage {
+            background: var(--color-cream);
+            /* Subtle texture for scrapbook feel */
+            background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23e6e6fa' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M.5 0v1.5L2.5 4H6V.5h-.5v-1zM0 6h1.5L4 4v1.5h-.5V6z'/%3E%3C/g%3E%3C/svg%3E");
+            overflow: auto;
+        }
+
+        .message-content {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px 20px;
+            max-width: 600px;
+            width: 90%;
+        }
+
+        /* Envelope Styling (Image Placeholder) */
+        .envelope-container {
+            width: 300px;
+            height: 200px;
+            position: relative;
+            cursor: pointer;
+            perspective: 1000px;
+            transition: transform 1s ease-in-out;
+        }
+
+        .envelope {
+            width: 100%;
+            height: 100%;
+            background-color: var(--color-pink);
+            border-radius: var(--border-radius-sm);
+            box-shadow: var(--shadow-soft);
+            position: relative;
+            transition: transform 1s ease-in-out;
+        }
+
+        .envelope::before { /* Envelope flap */
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background-color: var(--color-lavender);
+            border-radius: 15px 15px 0 0;
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+            transform-origin: top;
+            transition: transform 1s ease-in-out;
+            z-index: 2;
+        }
+
+        .envelope-open .envelope::before {
+            transform: rotateX(180deg) translateY(100%);
+            background-color: var(--color-teal);
+        }
+
+        .heart-seal {
+            position: absolute;
+            top: 45px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2em;
+            color: #d84343;
+            z-index: 3;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .envelope-open .heart-seal {
+            opacity: 0;
+        }
+
+        /* Note Inside */
+        .note {
+            position: absolute;
+            top: 10px;
+            width: 80%;
+            background-color: var(--color-cream);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(150px) scale(0.9);
+            transition: opacity 1s 0.5s ease-out, transform 1s 0.5s ease-out;
+            z-index: 1; /* Below the flap when closed, on top when open */
+            text-align: center;
+        }
+
+        .envelope-open .note {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .secret-message {
+            font-family: 'Caveat', cursive; /* Handwritten font */
+            font-size: 2.2em;
+            color: var(--color-handwritten);
+            margin-bottom: 25px;
+            white-space: pre-wrap; /* Allows line breaks in the message */
+        }
+        
+        .message-body {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.1em;
+            color: var(--color-primary-text);
+            margin-bottom: 30px;
+        }
+
+        .kiss-button {
+            background-color: #f7a8b8;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1.1em;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .kiss-button:hover {
+            transform: scale(1.05) translateY(-2px);
+            background-color: #ff9aa2;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Doodle Elements (No frames, just floating doodles) */
+        .doodle {
+            position: absolute;
+            font-size: 2em;
+            opacity: 0.7;
+            pointer-events: none;
+            transition: transform 0.5s ease;
+        }
+
+        .doodle:nth-child(1) { top: 50px; left: 10%; transform: rotate(-10deg); color: var(--color-pink); }
+        .doodle:nth-child(2) { top: 300px; right: 5%; transform: rotate(15deg); color: var(--color-teal); }
+        .doodle:nth-child(3) { bottom: 50px; left: 20%; transform: rotate(5deg); color: var(--color-lavender); }
+        .doodle:nth-child(4) { top: 150px; right: 20%; transform: rotate(-8deg); color: var(--color-pink); }
+
+        .doodle:hover {
+            transform: scale(1.2) rotate(0deg);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="login-stage" class="stage active">
+        <div class="login-card">
+            <h1>Welcome Back, Cutie 💖</h1>
+            <form id="login-form">
+                <input type="text" id="username" class="login-input" placeholder="Username" required>
+                <input type="password" id="password" class="login-input" placeholder="Password" required>
+                <button type="submit" class="login-button">Login</button>
+            </form>
+        </div>
+        <span class="floating-heart" style="left: 10%; animation-duration: 12s; animation-delay: 0s;">&#x2764;</span>
+        <span class="floating-heart" style="left: 30%; animation-duration: 8s; animation-delay: 3s; font-size: 24px;">&#x273F;</span>
+        <span class="floating-heart" style="left: 55%; animation-duration: 14s; animation-delay: 6s;">&#x2764;</span>
+        <span class="floating-heart" style="left: 80%; animation-duration: 10s; animation-delay: 1s; font-size: 18px;">&#x273F;</span>
+        <span class="floating-heart" style="left: 20%; animation-duration: 9s; animation-delay: 5s;">&#x2764;</span>
+    </div>
+
+    <div id="loading-stage" class="stage">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p class="loading-text">Hold tight, something adorable is on its way… 🌸</p>
+        </div>
+        <div id="name-scatter"></div>
+    </div>
+
+    <div id="message-stage" class="stage">
+        <div class="message-content">
+            <span class="doodle" style="top: 80px; left: 15%;">🐱</span>
+            <span class="doodle" style="bottom: 150px; right: 10%;">⭐</span>
+            <span class="doodle" style="top: 250px; right: 15%;">🐰</span>
+            <span class="doodle" style="bottom: 80px; left: 10%;">🌷</span>
+
+            <div class="envelope-container" id="envelope-container">
+                <div class="envelope">
+                    <span class="heart-seal">❤</span>
+                </div>
+            </div>
+
+            <div class="note" id="secret-note">
+                <p class="secret-message">
+                    My Dearest Kartik,
+                    <br>
+                    You’re loved more than you know 💌
+                </p>
+                <p class="message-body">
+                    I just wanted to send you this little piece of digital sunshine. Every time I see these colors, I think of how warm and cozy you make my life. Can't wait for all our adventures together!
+                </p>
+                <button class="kiss-button" onclick="sendKiss()">Click to Send a Kiss</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const VALID_USERNAME = "Kartik";
+        const VALID_PASSWORD = "27-12-2024";
+        const stage1 = document.getElementById('login-stage');
+        const stage2 = document.getElementById('loading-stage');
+        const stage3 = document.getElementById('message-stage');
+        const loginForm = document.getElementById('login-form');
+        const envelopeContainer = document.getElementById('envelope-container');
+
+        // --- STAGE NAVIGATION ---
+
+        function navigateTo(nextStage) {
+            const currentActive = document.querySelector('.stage.active');
+            if (currentActive) {
+                currentActive.classList.remove('active');
+            }
+            // Small delay for smooth fade transition
+            setTimeout(() => {
+                nextStage.classList.add('active');
+            }, 50); 
+        }
+
+        // --- STAGE 1: LOGIN LOGIC ---
+
+        loginForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const usernameInput = document.getElementById('username').value;
+            const passwordInput = document.getElementById('password').value;
+
+            if (usernameInput === VALID_USERNAME && passwordInput === VALID_PASSWORD) {
+                // Successful Login: Start Loading
+                navigateTo(stage2);
+                scatterNames();
+                setTimeout(() => {
+                    navigateTo(stage3); // Transition to message page
+                }, 3000); // 3 seconds loading time
+            } else {
+                alert("Oops! Wrong credentials. Hint: Username is 'Kartik' and password is the date '27-12-2024'.");
+            }
+        });
+
+        // --- STAGE 2: LOADING NAMES SCATTER ---
+
+        function scatterNames() {
+            const names = ["baby", "bae", "dumbass", "honey", "my boyfie", "my husband", "my fiancé", "my handsome"];
+            const container = document.getElementById('name-scatter');
+            container.innerHTML = ''; // Clear previous names
+
+            names.forEach((name) => {
+                const nameEl = document.createElement('div');
+                nameEl.className = 'random-name';
+                nameEl.textContent = name;
+
+                // Random positioning and animation variables
+                const x = (Math.random() * 200 - 100) + 'px'; // -100px to 100px
+                const y = (Math.random() * 200 - 100) + 'px'; // -100px to 100px
+                const top = (10 + Math.random() * 80) + '%';
+                const left = (10 + Math.random() * 80) + '%';
+                const delay = Math.random() * 5 + 's';
+                const duration = (10 + Math.random() * 10) + 's';
+
+                nameEl.style.cssText = `
+                    top: ${top};
+                    left: ${left};
+                    --x: ${x};
+                    --y: ${y};
+                    animation-delay: ${delay};
+                    animation-duration: ${duration};
+                    font-size: ${1 + Math.random() * 0.5}em;
+                `;
+                container.appendChild(nameEl);
+            });
+        }
+
+        // --- STAGE 3: MESSAGE LOGIC (Simplified without Replay) ---
+
+        envelopeContainer.addEventListener('click', function() {
+            // Only open if currently closed
+            if (!envelopeContainer.classList.contains('envelope-open')) {
+                envelopeContainer.classList.add('envelope-open');
+            }
+        });
+
+        function sendKiss() {
+            // This function creates a mailto link for the email.
+            // **ACTION REQUIRED:** Replace "YOUR_EMAIL@example.com" with the recipient's actual email.
+            const recipient = "YOUR_EMAIL@example.com"; 
+            const subject = "A Digital Kiss from Your Cutie!";
+            const body = "I clicked the kiss button on our secret website! Sending you a big, digital smooch! 😘";
+            
+            // This will open the user's default email client with the fields pre-filled.
+            window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            alert("A digital kiss is on its way! Your email app should open now.");
+        }
+        
+    </script>
+</body>
+</html>
