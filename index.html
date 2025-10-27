@@ -9,12 +9,12 @@
         @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Quicksand:wght@400;600;700&display=swap');
 
         :root {
-            --color-pink: #FFC0CB; /* Soft Pink */
-            --color-lavender: #E6E6FA; /* Lavender */
-            --color-teal: #B0E0E6; /* Light Teal Green */
-            --color-cream: #FFFDD0; /* Cream */
-            --color-primary-text: #6A5ACD; /* Slate Blue for contrast */
-            --color-handwritten: #50C878; /* Emerald Green for a pen effect */
+            --color-pink: #FFC0CB;
+            --color-lavender: #E6E6FA;
+            --color-teal: #B0E0E6;
+            --color-cream: #FFFDD0;
+            --color-primary-text: #6A5ACD;
+            --color-handwritten: #50C878;
             --shadow-soft: 0 8px 16px rgba(106, 90, 205, 0.2);
             --shadow-inset: 0 2px 4px rgba(0, 0, 0, 0.1);
             --border-radius-lg: 25px;
@@ -26,7 +26,6 @@
             margin: 0;
             font-family: 'Quicksand', sans-serif;
             color: var(--color-primary-text);
-            /* Removed overflow: hidden so content can scroll if necessary */
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -55,7 +54,7 @@
         /* --- LOGIN PAGE (STAGE 1) --- */
         #login-stage {
             background: linear-gradient(135deg, var(--color-pink) 0%, var(--color-lavender) 100%);
-            overflow: hidden; /* Keep hidden on login for effect */
+            overflow: hidden; 
         }
 
         .floating-heart {
@@ -67,24 +66,15 @@
             opacity: 0.7;
         }
 
-        /* FIX: Adjusted keyframes so objects float completely out of view */
+        /* FIX: Keyframes adjusted for clean exit */
         @keyframes float-up {
             0% { transform: translateY(110vh) scale(0.5); opacity: 0; }
             50% { opacity: 1; }
             100% { transform: translateY(-20vh) scale(1); opacity: 0; }
         }
 
-        .login-card {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 40px;
-            border-radius: var(--border-radius-lg);
-            box-shadow: var(--shadow-soft);
-            text-align: center;
-            max-width: 400px;
-            width: 90%;
-        }
-
-        /* Login styles (omitted for brevity, assume they are correct) */
+        /* Login styles (kept for brevity) */
+        .login-card { background: rgba(255, 255, 255, 0.95); padding: 40px; border-radius: var(--border-radius-lg); box-shadow: var(--shadow-soft); text-align: center; max-width: 400px; width: 90%; }
         .login-card h1 { color: var(--color-primary-text); font-size: 2em; margin-bottom: 30px; }
         .login-input { width: 100%; padding: 15px; margin-bottom: 20px; border: 2px solid var(--color-lavender); border-radius: var(--border-radius-sm); background-color: var(--color-cream); box-shadow: var(--shadow-inset); box-sizing: border-box; font-size: 1em; color: var(--color-primary-text); transition: border-color 0.3s ease; }
         .login-input:focus { outline: none; border-color: var(--color-pink); background-color: white; }
@@ -95,7 +85,7 @@
         #loading-stage {
             background: linear-gradient(135deg, var(--color-lavender) 0%, var(--color-teal) 100%);
         }
-        /* Loading styles (omitted for brevity, assume they are correct) */
+        /* Loading styles (kept for brevity) */
         .loading-content { text-align: center; padding: 30px; background: rgba(255, 255, 255, 0.3); border-radius: var(--border-radius-lg); box-shadow: var(--shadow-soft); z-index: 10; }
         .spinner { width: 60px; height: 60px; border: 8px solid var(--color-cream); border-top: 8px solid var(--color-pink); border-radius: 50%; animation: spin 1.5s cubic-bezier(0.5, 0, 0.5, 1) infinite; margin: 0 auto 20px; box-shadow: inset 0 0 0 5px var(--color-teal); }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -106,16 +96,16 @@
         #message-stage {
             background: var(--color-cream);
             background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23e6e6fa' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M.5 0v1.5L2.5 4H6V.5h-.5v-1zM0 6h1.5L4 4v1.5h-.5V6z'/%3E%3C/g%3E%3C/svg%3E");
-            /* Allow vertical scrolling if content exceeds screen height */
+            /* FIX: Ensure the stage uses the whole viewport and enables scrolling */
             overflow-y: auto; 
             overflow-x: hidden;
-            display: block; /* Use block to correctly center content within overflow */
-            position: relative;
+            align-items: flex-start; /* Align content to the top */
         }
 
-        /* New: Floating Emojis (Doodles) */
+        /* Floating Emojis (Doodles) */
         .floating-doodle {
-            position: fixed; /* Use fixed so they float outside the scrolling content */
+            /* FIX: Use absolute positioning relative to the BODY/STAGE for true floating on the landing page */
+            position: absolute; 
             pointer-events: none;
             opacity: 0.8;
             font-size: 2em;
@@ -130,44 +120,44 @@
             75% { transform: translate(5px, -15px) rotate(2deg); }
         }
 
-        /* Doodles Positioning (Randomly placed) */
-        #doodle-1 { top: 10%; left: 5%; animation-duration: 10s; animation-delay: 1s; } /* 🎀 */
-        #doodle-2 { top: 30%; right: 5%; animation-duration: 8s; animation-delay: 3s; } /* ✨ */
-        #doodle-3 { bottom: 15%; left: 15%; animation-duration: 12s; animation-delay: 6s; } /* ❤️ */
-        #doodle-4 { top: 5%; left: 40%; animation-duration: 9s; animation-delay: 2s; } /* 🌙 */
-        #doodle-5 { bottom: 25%; right: 20%; animation-duration: 11s; animation-delay: 4s; } /* 🎉 */
-        #doodle-6 { top: 60%; left: 8%; animation-duration: 7s; animation-delay: 0s; } /* 🫶 */
-        #doodle-7 { bottom: 5%; left: 50%; animation-duration: 13s; animation-delay: 5s; } /* 🥺 */
-        #doodle-8 { top: 75%; right: 10%; animation-duration: 6s; animation-delay: 7s; } /* 😎 */
-        #doodle-9 { top: 20%; right: 25%; animation-duration: 14s; animation-delay: 8s; } /* 😼 */
-        /* NOTE: Removed 😭 doodle as it seemed out of place with the others, but you can add it back if needed */
-
-        /* Using Flexbox to center the content container */
+        /* Doodles Positioning (Adjusted to ensure visibility outside the mail) */
+        #doodle-1 { top: 10vh; left: 5vw; animation-duration: 10s; animation-delay: 1s; } /* 🎀 */
+        #doodle-2 { top: 20vh; right: 8vw; animation-duration: 8s; animation-delay: 3s; } /* ✨ */
+        #doodle-3 { bottom: 15vh; left: 15vw; animation-duration: 12s; animation-delay: 6s; } /* ❤️ */
+        #doodle-4 { top: 5vh; left: 45vw; animation-duration: 9s; animation-delay: 2s; } /* 🌙 */
+        #doodle-5 { bottom: 25vh; right: 20vw; animation-duration: 11s; animation-delay: 4s; } /* 🎉 */
+        #doodle-6 { top: 60vh; left: 8vw; animation-duration: 7s; animation-delay: 0s; } /* 🫶 */
+        #doodle-7 { bottom: 5vh; left: 50vw; animation-duration: 13s; animation-delay: 5s; } /* 🥺 */
+        #doodle-8 { top: 75vh; right: 10vw; animation-duration: 6s; animation-delay: 7s; } /* 😎 */
+        #doodle-9 { top: 30vh; right: 25vw; animation-duration: 14s; animation-delay: 8s; } /* 😼 */
+        
+        /* FIX: Main content container to center and respect margins */
         .message-content {
             position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start; /* Start content near the top */
-            /* Ensure it takes full width for centering */
-            width: 100%; 
-            /* Add top/bottom padding to ensure visual margin */
+            /* Added padding to create the 5cm gap at the top/bottom */
             padding: var(--main-margin) 0; 
-            min-height: 100vh; /* Ensure it covers the screen height */
+            /* Min height set to auto, let content drive the height, enable scroll */
+            min-height: auto; 
+            width: 100%; 
+            box-sizing: border-box;
         }
 
-        /* Envelope Container - ENLARGED & Responsive */
+        /* Envelope Container - Final Responsive Size */
         .envelope-container {
-            /* Responsive width, respecting 5cm gap */
+            /* Width calculation for 5cm gap from the left/right */
             width: calc(100% - 2 * var(--main-margin)); 
-            max-width: 800px; /* Cap the max size on very large screens */
-            height: 350px; /* Increased initial height for the large envelope */
+            max-width: 600px; /* Capped for desktop readability */
+            height: 300px; /* Reduced initial height slightly for better initial view */
             position: relative;
             cursor: pointer;
             perspective: 1000px;
             transition: height 1s 0.8s ease-in-out; 
             overflow: hidden; 
-            margin-top: 50px; /* Small push down from top */
+            margin-top: 50px; 
+            margin-bottom: 50px; /* Margin to separate from bottom of screen */
         }
         
         .envelope-body {
@@ -185,13 +175,12 @@
         /* THE NOTE CONTAINER (The content that unfolds) */
         .note {
             position: relative; 
-            /* Initial top position relative to new envelope height */
-            top: 350px; 
+            top: 300px; /* Adjusted initial top position based on new envelope height */
             left: 50%;
             transform: translateX(-50%);
             width: 90%;
             background-color: white; 
-            padding: 40px; /* Increased padding */
+            padding: 40px; 
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             opacity: 0;
@@ -201,35 +190,27 @@
             min-height: 200px; 
         }
 
-        /* Envelope Flap styles (omitted for brevity, assume they are correct) */
+        /* Envelope Flap styles (kept for brevity) */
         .envelope-flap { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 50%; background-color: var(--color-lavender); border-radius: 15px 15px 0 0; clip-path: polygon(0 0, 100% 0, 50% 100%); transform-origin: top; transition: transform 1s ease-in-out; z-index: 3; }
         .envelope-container.open .envelope-flap { transform: rotateX(180deg); background-color: var(--color-teal); }
         
-        /* Increased Open Height to handle the longer text */
+        /* FIX: Reduced Open Height and set to viewport relative unit (vh) for better responsiveness */
         .envelope-container.open {
-            height: 1200px; 
+            height: 90vh; /* Set to 90% of viewport height */
+            /* Added overflow to ensure content is scrollable inside the opened note */
+            overflow-y: auto; 
+            overflow-x: hidden;
         }
 
         .envelope-container.open .note {
             opacity: 1;
             /* Adjusted slide-up position */
-            top: 80px; 
+            top: 40px; 
         }
 
-        .heart-seal {
-            position: absolute;
-            top: 80px; 
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 2.5em;
-            color: #d84343;
-            z-index: 4;
-            transition: opacity 0.5s ease-in-out;
-        }
-
-        .envelope-container.open .heart-seal {
-            opacity: 0;
-        }
+        /* Heart Seal styles (kept for brevity) */
+        .heart-seal { position: absolute; top: 70px; left: 50%; transform: translateX(-50%); font-size: 2.5em; color: #d84343; z-index: 4; transition: opacity 0.5s ease-in-out; }
+        .envelope-container.open .heart-seal { opacity: 0; }
 
         /* Message Styling */
         .secret-message {
@@ -243,20 +224,32 @@
         
         .message-body {
             font-family: 'Quicksand', sans-serif;
-            font-size: 1.15em; /* Slightly larger font */
+            font-size: 1.15em; 
             color: var(--color-primary-text);
             margin-bottom: 30px;
-            /* Set a maximum width for the text block within the note for readability */
             max-width: 90%; 
             margin-left: auto;
             margin-right: auto;
-            /* Using left alignment for the long anniversary text */
             text-align: left; 
             padding: 0; 
         }
-        /* Button styles (omitted for brevity, assume they are correct) */
-        .kiss-button { background-color: #f7a8b8; color: white; border: none; padding: 12px 25px; border-radius: 30px; font-weight: bold; font-size: 1.1em; cursor: pointer; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease; }
+
+        /* Button styles (kept for brevity) */
+        .kiss-button { background-color: #f7a8b8; color: white; border: none; padding: 12px 25px; border-radius: 30px; font-weight: bold; font-size: 1.1em; cursor: pointer; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease; margin-bottom: 10px; }
         .kiss-button:hover { transform: scale(1.05) translateY(-2px); background-color: #ff9aa2; box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3); }
+
+        /* Media Query for smaller screens (e.g., phones) to reduce margins */
+        @media (max-width: 600px) {
+            :root {
+                --main-margin: 1.5rem; /* Reduce margin on small screens */
+            }
+            .envelope-container.open {
+                height: 95vh; /* Use more of the screen height on mobile */
+            }
+            .note {
+                padding: 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -366,9 +359,6 @@
             }
         });
 
-        // --- STAGE 2: LOADING NAMES SCATTER (Function removed) ---
-        function scatterNames() { /* Function removed by user request. */ }
-
         // --- STAGE 3: MESSAGE LOGIC (Opening the mail) ---
 
         envelopeContainer.addEventListener('click', function() {
@@ -383,7 +373,6 @@
             const body = "I clicked the kiss button on our secret website! Sending you a big, digital smooch! 😘";
             
             window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            // Removed the alert as you wanted the mail to work without an extra step
         }
         
     </script>
