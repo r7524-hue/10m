@@ -110,7 +110,7 @@
         .login-button {
             width: 100%;
             padding: 15px;
-            background: linear-gradient(90deg, #ff9aa2, #ffb7b2); /* Candy-colored gradient */
+            background: linear-gradient(90deg, #ff9aa2, #ffb7b2);
             color: white;
             border: none;
             border-radius: var(--border-radius-sm);
@@ -134,7 +134,7 @@
         .loading-content {
             text-align: center;
             padding: 30px;
-            background: rgba(255, 255, 255, 0.3); /* Semi-transparent white card */
+            background: rgba(255, 255, 255, 0.3);
             border-radius: var(--border-radius-lg);
             box-shadow: var(--shadow-soft);
             z-index: 10;
@@ -158,18 +158,18 @@
 
         .loading-text {
             font-size: 1.5em;
-            color: var(--color-primary-text); /* Use a darker color for visibility */
+            color: var(--color-primary-text);
             text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
         }
 
         .random-name {
             position: absolute;
             color: var(--color-primary-text); 
-            opacity: 0.8; /* Slightly less opaque */
+            opacity: 0.8;
             font-size: 1.1em;
             padding: 5px 10px;
             border-radius: 10px;
-            background: rgba(255, 255, 255, 0.5); /* Background for visibility */
+            background: rgba(255, 255, 255, 0.5);
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             animation: name-float 15s ease-in-out infinite alternate;
         }
@@ -182,7 +182,6 @@
         /* --- SECRET MESSAGE PAGE (STAGE 3) --- */
         #message-stage {
             background: var(--color-cream);
-            /* Subtle texture for scrapbook feel */
             background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23e6e6fa' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M.5 0v1.5L2.5 4H6V.5h-.5v-1zM0 6h1.5L4 4v1.5h-.5V6z'/%3E%3C/g%3E%3C/svg%3E");
             overflow: auto;
         }
@@ -197,27 +196,53 @@
             width: 90%;
         }
 
-        /* Envelope Styling (Image Placeholder) */
+        /* Envelope Container - Now controls the total size of the 'mail' effect */
         .envelope-container {
             width: 300px;
-            height: 200px;
+            /* Start with a collapsed height */
+            height: 200px; 
             position: relative;
             cursor: pointer;
             perspective: 1000px;
-            transition: transform 1s ease-in-out;
+            /* Allow the container to grow when the 'open' class is applied */
+            transition: height 1s 0.8s ease-in-out; 
+            overflow: hidden; /* Crucial for hiding the initial message height */
         }
-
-        .envelope {
+        
+        /* Envelop Body */
+        .envelope-body {
             width: 100%;
             height: 100%;
             background-color: var(--color-pink);
             border-radius: var(--border-radius-sm);
             box-shadow: var(--shadow-soft);
-            position: relative;
-            transition: transform 1s ease-in-out;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
         }
 
-        .envelope::before { /* Envelope flap */
+        /* THE NOTE CONTAINER (The content that unfolds) */
+        .note {
+            position: relative; /* Relative position inside the container */
+            top: 200px; /* Start position below the initial envelope height */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            background-color: white; 
+            padding: 30px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transition: opacity 1s 0.8s ease-out, top 1s 0.8s ease-out;
+            z-index: 2;
+            text-align: center;
+            /* The message box itself should grow with content */
+            min-height: 150px; 
+        }
+
+        /* Envelope Flap */
+        .envelope-flap {
             content: '';
             position: absolute;
             top: 0;
@@ -229,12 +254,29 @@
             clip-path: polygon(0 0, 100% 0, 50% 100%);
             transform-origin: top;
             transition: transform 1s ease-in-out;
-            z-index: 2;
+            z-index: 3;
+        }
+        
+        /* --- OPEN STATE ANIMATIONS --- */
+
+        /* 1. Flap opens */
+        .envelope-container.open .envelope-flap {
+            transform: rotateX(180deg);
+            background-color: var(--color-teal);
+        }
+        
+        /* 2. Container (Mail Image) grows to fit the content */
+        .envelope-container.open {
+            /* Calculate the new height needed for the note + envelope body margin */
+            /* This value will need adjustment based on how much text you add */
+            /* It's set high to accommodate the sample text */
+            height: 550px; 
         }
 
-        .envelope-open .envelope::before {
-            transform: rotateX(180deg) translateY(100%);
-            background-color: var(--color-teal);
+        /* 3. Note slides up and becomes visible */
+        .envelope-container.open .note {
+            opacity: 1;
+            top: 50px; /* Slide up past the initial envelope position */
         }
 
         .heart-seal {
@@ -244,41 +286,21 @@
             transform: translateX(-50%);
             font-size: 2em;
             color: #d84343;
-            z-index: 3;
+            z-index: 4;
             transition: opacity 0.5s ease-in-out;
         }
 
-        .envelope-open .heart-seal {
+        .envelope-container.open .heart-seal {
             opacity: 0;
         }
 
-        /* Note Inside */
-        .note {
-            position: absolute;
-            top: 10px;
-            width: 80%;
-            background-color: var(--color-cream);
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            opacity: 0;
-            transform: translateY(150px) scale(0.9);
-            transition: opacity 1s 0.5s ease-out, transform 1s 0.5s ease-out;
-            z-index: 1; /* Below the flap when closed, on top when open */
-            text-align: center;
-        }
-
-        .envelope-open .note {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-
+        /* Message Styling */
         .secret-message {
-            font-family: 'Caveat', cursive; /* Handwritten font */
+            font-family: 'Caveat', cursive;
             font-size: 2.2em;
             color: var(--color-handwritten);
             margin-bottom: 25px;
-            white-space: pre-wrap; /* Allows line breaks in the message */
+            white-space: pre-wrap;
         }
         
         .message-body {
@@ -286,6 +308,8 @@
             font-size: 1.1em;
             color: var(--color-primary-text);
             margin-bottom: 30px;
+            text-align: left; /* Better for reading large text blocks */
+            padding: 0 10px;
         }
 
         .kiss-button {
@@ -307,7 +331,7 @@
             box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
         }
 
-        /* Doodle Elements (No frames, just floating doodles) */
+        /* Doodle Elements */
         .doodle {
             position: absolute;
             font-size: 2em;
@@ -316,21 +340,17 @@
             transition: transform 0.5s ease;
         }
 
-        .doodle:nth-child(1) { top: 50px; left: 10%; transform: rotate(-10deg); color: var(--color-pink); }
-        .doodle:nth-child(2) { top: 300px; right: 5%; transform: rotate(15deg); color: var(--color-teal); }
-        .doodle:nth-child(3) { bottom: 50px; left: 20%; transform: rotate(5deg); color: var(--color-lavender); }
-        .doodle:nth-child(4) { top: 150px; right: 20%; transform: rotate(-8deg); color: var(--color-pink); }
-
-        .doodle:hover {
-            transform: scale(1.2) rotate(0deg);
-        }
+        .doodle:nth-child(1) { top: 80px; left: 15%; transform: rotate(-10deg); color: var(--color-pink); }
+        .doodle:nth-child(2) { bottom: 150px; right: 10%; transform: rotate(15deg); color: var(--color-teal); }
+        .doodle:nth-child(3) { top: 250px; right: 15%; transform: rotate(5deg); color: var(--color-lavender); }
+        .doodle:nth-child(4) { bottom: 80px; left: 10%; transform: rotate(-8deg); color: var(--color-pink); }
     </style>
 </head>
 <body>
 
     <div id="login-stage" class="stage active">
         <div class="login-card">
-            <h1>Welcome Back, Cutie 💖</h1>
+            <h1>Hey Baby 💖</h1>
             <form id="login-form">
                 <input type="text" id="username" class="login-input" placeholder="Username" required>
                 <input type="password" id="password" class="login-input" placeholder="Password" required>
@@ -347,34 +367,29 @@
     <div id="loading-stage" class="stage">
         <div class="loading-content">
             <div class="spinner"></div>
-            <p class="loading-text">Hold tight, something adorable is on its way… 🌸</p>
+            <p class="loading-text">Hold tight, something adorable is on its way 🌸</p>
         </div>
         <div id="name-scatter"></div>
     </div>
 
-    <div id="message-stage" class="stage">
-        <div class="message-content">
-            <span class="doodle" style="top: 80px; left: 15%;">🐱</span>
-            <span class="doodle" style="bottom: 150px; right: 10%;">⭐</span>
-            <span class="doodle" style="top: 250px; right: 15%;">🐰</span>
-            <span class="doodle" style="bottom: 80px; left: 10%;">🌷</span>
 
             <div class="envelope-container" id="envelope-container">
-                <div class="envelope">
-                    <span class="heart-seal">❤</span>
+                <div class="envelope-body"></div>
+                <div class="note" id="secret-note">
+                    <p class="secret-message">
+                        My Dearest Kartik,
+                        <br>
+                        You’re loved more than you know 💌
+                    </p>
+                    <p class="message-body">
+                        I just wanted to send you this little piece of digital sunshine. Every time I see these pastel colors, I think of how warm and cozy you make my life. You're my favorite human, my comfort zone, and my greatest adventure. I'm so grateful to have you.
+                        <br><br>
+                        This note is meant to unfold, just like my feelings for you. It keeps going and going, even when you think you've reached the end! I hope this surprise made you smile as much as you make me smile every single day. Always and forever.
+                    </p>
+                    <button class="kiss-button" onclick="sendKiss()">Click to Send a Kiss</button>
                 </div>
-            </div>
-
-            <div class="note" id="secret-note">
-                <p class="secret-message">
-                    My Dearest Kartik,
-                    <br>
-                    You’re loved more than you know 💌
-                </p>
-                <p class="message-body">
-                    I just wanted to send you this little piece of digital sunshine. Every time I see these colors, I think of how warm and cozy you make my life. Can't wait for all our adventures together!
-                </p>
-                <button class="kiss-button" onclick="sendKiss()">Click to Send a Kiss</button>
+                <div class="envelope-flap"></div>
+                <span class="heart-seal">❤</span>
             </div>
         </div>
     </div>
@@ -395,7 +410,6 @@
             if (currentActive) {
                 currentActive.classList.remove('active');
             }
-            // Small delay for smooth fade transition
             setTimeout(() => {
                 nextStage.classList.add('active');
             }, 50); 
@@ -409,32 +423,21 @@
             const passwordInput = document.getElementById('password').value;
 
             if (usernameInput === VALID_USERNAME && passwordInput === VALID_PASSWORD) {
-                // Successful Login: Start Loading
                 navigateTo(stage2);
                 scatterNames();
                 setTimeout(() => {
-                    navigateTo(stage3); // Transition to message page
-                }, 3000); // 3 seconds loading time
+                    navigateTo(stage3); 
+                }, 3000); 
             } else {
                 alert("Oops! Wrong credentials. Hint: Username is 'Kartik' and password is the date '27-12-2024'.");
             }
         });
 
-        // --- STAGE 2: LOADING NAMES SCATTER ---
+        // --- STAGE 2: LOADING NAMES SCATTER (No change) ---
 
-        function scatterNames() {
-            const names = ["baby", "bae", "dumbass", "honey", "my boyfie", "my husband", "my fiancé", "my handsome"];
-            const container = document.getElementById('name-scatter');
-            container.innerHTML = ''; // Clear previous names
 
-            names.forEach((name) => {
-                const nameEl = document.createElement('div');
-                nameEl.className = 'random-name';
-                nameEl.textContent = name;
-
-                // Random positioning and animation variables
-                const x = (Math.random() * 200 - 100) + 'px'; // -100px to 100px
-                const y = (Math.random() * 200 - 100) + 'px'; // -100px to 100px
+                const x = (Math.random() * 200 - 100) + 'px';
+                const y = (Math.random() * 200 - 100) + 'px';
                 const top = (10 + Math.random() * 80) + '%';
                 const left = (10 + Math.random() * 80) + '%';
                 const delay = Math.random() * 5 + 's';
@@ -453,23 +456,28 @@
             });
         }
 
-        // --- STAGE 3: MESSAGE LOGIC (Simplified without Replay) ---
+        // --- STAGE 3: MESSAGE LOGIC (Opening the mail) ---
 
         envelopeContainer.addEventListener('click', function() {
-            // Only open if currently closed
-            if (!envelopeContainer.classList.contains('envelope-open')) {
-                envelopeContainer.classList.add('envelope-open');
+            if (!envelopeContainer.classList.contains('open')) {
+                // Calculate the required height of the note
+                const note = document.getElementById('secret-note');
+                const contentHeight = note.scrollHeight; 
+                
+                // New height = initial envelope height (200px) + content height + top margin
+                // We'll use a fixed value (550px) in CSS for a smoother, predefined animation.
+                // If you add much more text, you will need to increase the '550px' value in the CSS.
+                
+                envelopeContainer.classList.add('open');
             }
         });
 
         function sendKiss() {
-            // This function creates a mailto link for the email.
             // **ACTION REQUIRED:** Replace "YOUR_EMAIL@example.com" with the recipient's actual email.
-            const recipient = "YOUR_EMAIL@example.com"; 
+            const recipient = "ravennn7524@gmail.com"; 
             const subject = "A Digital Kiss from Your Cutie!";
             const body = "I clicked the kiss button on our secret website! Sending you a big, digital smooch! 😘";
             
-            // This will open the user's default email client with the fields pre-filled.
             window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
             alert("A digital kiss is on its way! Your email app should open now.");
         }
