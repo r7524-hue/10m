@@ -16,7 +16,7 @@
             --color-primary-text: #6A5ACD; /* Slate Blue for contrast */
             --color-handwritten: #50C878; /* Emerald Green for a pen effect */
             --shadow-soft: 0 8px 16px rgba(106, 90, 205, 0.2);
-            --shadow-inset: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+            --shadow-inset: 0 2px 4px rgba(0, 0, 0, 0.1);
             --border-radius-lg: 25px;
             --border-radius-sm: 15px;
         }
@@ -161,23 +161,7 @@
             color: var(--color-primary-text);
             text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
         }
-
-        .random-name {
-            position: absolute;
-            color: var(--color-primary-text); 
-            opacity: 0.8;
-            font-size: 1.1em;
-            padding: 5px 10px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.5);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            animation: name-float 15s ease-in-out infinite alternate;
-        }
-
-        @keyframes name-float {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(var(--x), var(--y)); }
-        }
+        /* NOTE: .random-name CSS has been removed */
 
         /* --- SECRET MESSAGE PAGE (STAGE 3) --- */
         #message-stage {
@@ -199,17 +183,14 @@
         /* Envelope Container - Now controls the total size of the 'mail' effect */
         .envelope-container {
             width: 300px;
-            /* Start with a collapsed height */
             height: 200px; 
             position: relative;
             cursor: pointer;
             perspective: 1000px;
-            /* Allow the container to grow when the 'open' class is applied */
             transition: height 1s 0.8s ease-in-out; 
-            overflow: hidden; /* Crucial for hiding the initial message height */
+            overflow: hidden; 
         }
         
-        /* Envelop Body */
         .envelope-body {
             width: 100%;
             height: 100%;
@@ -224,8 +205,8 @@
 
         /* THE NOTE CONTAINER (The content that unfolds) */
         .note {
-            position: relative; /* Relative position inside the container */
-            top: 200px; /* Start position below the initial envelope height */
+            position: relative; 
+            top: 200px; 
             left: 50%;
             transform: translateX(-50%);
             width: 90%;
@@ -237,7 +218,6 @@
             transition: opacity 1s 0.8s ease-out, top 1s 0.8s ease-out;
             z-index: 2;
             text-align: center;
-            /* The message box itself should grow with content */
             min-height: 150px; 
         }
 
@@ -258,25 +238,18 @@
         }
         
         /* --- OPEN STATE ANIMATIONS --- */
-
-        /* 1. Flap opens */
         .envelope-container.open .envelope-flap {
             transform: rotateX(180deg);
             background-color: var(--color-teal);
         }
         
-        /* 2. Container (Mail Image) grows to fit the content */
         .envelope-container.open {
-            /* Calculate the new height needed for the note + envelope body margin */
-            /* This value will need adjustment based on how much text you add */
-            /* It's set high to accommodate the sample text */
             height: 550px; 
         }
 
-        /* 3. Note slides up and becomes visible */
         .envelope-container.open .note {
             opacity: 1;
-            top: 50px; /* Slide up past the initial envelope position */
+            top: 50px; 
         }
 
         .heart-seal {
@@ -308,7 +281,7 @@
             font-size: 1.1em;
             color: var(--color-primary-text);
             margin-bottom: 30px;
-            text-align: left; /* Better for reading large text blocks */
+            text-align: left;
             padding: 0 10px;
         }
 
@@ -330,20 +303,7 @@
             background-color: #ff9aa2;
             box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
         }
-
-        /* Doodle Elements */
-        .doodle {
-            position: absolute;
-            font-size: 2em;
-            opacity: 0.7;
-            pointer-events: none;
-            transition: transform 0.5s ease;
-        }
-
-        .doodle:nth-child(1) { top: 80px; left: 15%; transform: rotate(-10deg); color: var(--color-pink); }
-        .doodle:nth-child(2) { bottom: 150px; right: 10%; transform: rotate(15deg); color: var(--color-teal); }
-        .doodle:nth-child(3) { top: 250px; right: 15%; transform: rotate(5deg); color: var(--color-lavender); }
-        .doodle:nth-child(4) { bottom: 80px; left: 10%; transform: rotate(-8deg); color: var(--color-pink); }
+        /* NOTE: .doodle CSS has been removed */
     </style>
 </head>
 <body>
@@ -369,10 +329,10 @@
             <div class="spinner"></div>
             <p class="loading-text">Hold tight, something adorable is on its way 🌸</p>
         </div>
-        <div id="name-scatter"></div>
-    </div>
+        </div>
 
-
+    <div id="message-stage" class="stage">
+        <div class="message-content">
             <div class="envelope-container" id="envelope-container">
                 <div class="envelope-body"></div>
                 <div class="note" id="secret-note">
@@ -424,7 +384,7 @@
 
             if (usernameInput === VALID_USERNAME && passwordInput === VALID_PASSWORD) {
                 navigateTo(stage2);
-                scatterNames();
+                // No need to call scatterNames() since it's removed
                 setTimeout(() => {
                     navigateTo(stage3); 
                 }, 3000); 
@@ -433,53 +393,23 @@
             }
         });
 
-        // --- STAGE 2: LOADING NAMES SCATTER (No change) ---
-
-
-                const x = (Math.random() * 200 - 100) + 'px';
-                const y = (Math.random() * 200 - 100) + 'px';
-                const top = (10 + Math.random() * 80) + '%';
-                const left = (10 + Math.random() * 80) + '%';
-                const delay = Math.random() * 5 + 's';
-                const duration = (10 + Math.random() * 10) + 's';
-
-                nameEl.style.cssText = `
-                    top: ${top};
-                    left: ${left};
-                    --x: ${x};
-                    --y: ${y};
-                    animation-delay: ${delay};
-                    animation-duration: ${duration};
-                    font-size: ${1 + Math.random() * 0.5}em;
-                `;
-                container.appendChild(nameEl);
-            });
-        }
+        // --- STAGE 2: LOADING NAMES SCATTER (Function removed) ---
+        // scatterNames function is no longer needed.
 
         // --- STAGE 3: MESSAGE LOGIC (Opening the mail) ---
 
         envelopeContainer.addEventListener('click', function() {
             if (!envelopeContainer.classList.contains('open')) {
-                // Calculate the required height of the note
-                const note = document.getElementById('secret-note');
-                const contentHeight = note.scrollHeight; 
-                
-                // New height = initial envelope height (200px) + content height + top margin
-                // We'll use a fixed value (550px) in CSS for a smoother, predefined animation.
-                // If you add much more text, you will need to increase the '550px' value in the CSS.
-                
                 envelopeContainer.classList.add('open');
             }
         });
 
         function sendKiss() {
-            // **ACTION REQUIRED:** Replace "YOUR_EMAIL@example.com" with the recipient's actual email.
             const recipient = "ravennn7524@gmail.com"; 
             const subject = "A Digital Kiss from Your Cutie!";
             const body = "I clicked the kiss button on our secret website! Sending you a big, digital smooch! 😘";
             
             window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            alert("A digital kiss is on its way! Your email app should open now.");
         }
         
     </script>
