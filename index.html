@@ -72,13 +72,14 @@
             100% { transform: translateY(-20vh) scale(1); opacity: 0; }
         }
 
-        /* Login and Loading styles omitted for brevity */
         .login-card { background: rgba(255, 255, 255, 0.95); padding: 40px; border-radius: var(--border-radius-lg); box-shadow: var(--shadow-soft); text-align: center; max-width: 400px; width: 90%; }
         .login-card h1 { color: var(--color-primary-text); font-size: 2em; margin-bottom: 30px; }
         .login-input { width: 100%; padding: 15px; margin-bottom: 20px; border: 2px solid var(--color-lavender); border-radius: var(--border-radius-sm); background-color: var(--color-cream); box-shadow: var(--shadow-inset); box-sizing: border-box; font-size: 1em; color: var(--color-primary-text); transition: border-color 0.3s ease; }
         .login-input:focus { outline: none; border-color: var(--color-pink); background-color: white; }
         .login-button { width: 100%; padding: 15px; background: linear-gradient(90deg, #ff9aa2, #ffb7b2); color: white; border: none; border-radius: var(--border-radius-sm); font-size: 1.2em; font-weight: bold; cursor: pointer; box-shadow: 0 4px 8px rgba(255, 154, 162, 0.5); transition: transform 0.2s ease, box-shadow 0.2s ease; }
         .login-button:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 6px 12px rgba(255, 154, 162, 0.7); }
+        
+        /* --- LOADING PAGE (STAGE 2) --- */
         #loading-stage { background: linear-gradient(135deg, var(--color-lavender) 0%, var(--color-teal) 100%); }
         .loading-content { text-align: center; padding: 30px; background: rgba(255, 255, 255, 0.3); border-radius: var(--border-radius-lg); box-shadow: var(--shadow-soft); z-index: 10; }
         .spinner { width: 60px; height: 60px; border: 8px solid var(--color-cream); border-top: 8px solid var(--color-pink); border-radius: 50%; animation: spin 1.5s cubic-bezier(0.5, 0, 0.5, 1) infinite; margin: 0 auto 20px; box-shadow: inset 0 0 0 5px var(--color-teal); }
@@ -94,7 +95,7 @@
             align-items: flex-start;
         }
 
-        /* Floating Emojis (Doodles) - positioning omitted for brevity */
+        /* Floating Emojis (Doodles) */
         .floating-doodle { position: absolute; pointer-events: none; opacity: 0.8; font-size: 2em; animation: float-doodle linear infinite; z-index: 5; }
         @keyframes float-doodle { 0%, 100% { transform: translate(0, 0) rotate(0deg); } 25% { transform: translate(15px, 10px) rotate(5deg); } 50% { transform: translate(-10px, 5px) rotate(-3deg); } 75% { transform: translate(5px, -15px) rotate(2deg); } }
         #doodle-1 { top: 10vh; left: 5vw; animation-duration: 10s; animation-delay: 1s; } 
@@ -118,7 +119,7 @@
             box-sizing: border-box;
         }
 
-        /* Envelope Container - Final Responsive Size */
+        /* Envelope Container - Responsive Sizing */
         .envelope-container {
             width: calc(100% - 2 * var(--main-margin)); 
             max-width: 600px;
@@ -150,7 +151,6 @@
             left: 50%;
             transform: translateX(-50%);
             width: 90%;
-            /* FIX: Set min-height to auto and height to auto for the paper to fully expand */
             height: auto;
             min-height: 200px; 
             background-color: white; 
@@ -161,17 +161,15 @@
             transition: opacity 1s 0.8s ease-out, top 1s 0.8s ease-out;
             z-index: 2;
             text-align: center;
-            /* Ensure inner content is also a flex container to push the button to the bottom */
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
 
-        /* Envelope Flap styles omitted for brevity */
         .envelope-flap { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 50%; background-color: var(--color-lavender); border-radius: 15px 15px 0 0; clip-path: polygon(0 0, 100% 0, 50% 100%); transform-origin: top; transition: transform 1s ease-in-out; z-index: 3; }
         .envelope-container.open .envelope-flap { transform: rotateX(180deg); background-color: var(--color-teal); }
         
-        /* FIX: Set Open Height to 95vh for maximal screen usage */
+        /* Ensures the open mail takes up most of the screen and is scrollable internally */
         .envelope-container.open {
             height: 95vh; 
             overflow-y: auto; 
@@ -181,12 +179,10 @@
         .envelope-container.open .note {
             opacity: 1;
             top: 40px; 
-            /* FIX: Important! Allows the note to take up the available height within the scrollable container */
             flex-grow: 1; 
-            height: auto; /* Allow height to be determined by content + flex-grow */
+            height: auto; 
         }
 
-        /* Heart Seal styles omitted for brevity */
         .heart-seal { position: absolute; top: 70px; left: 50%; transform: translateX(-50%); font-size: 2.5em; color: #d84343; z-index: 4; transition: opacity 0.5s ease-in-out; }
         .envelope-container.open .heart-seal { opacity: 0; }
 
@@ -204,7 +200,6 @@
             font-family: 'Quicksand', sans-serif;
             font-size: 1.15em; 
             color: var(--color-primary-text);
-            /* Important: Allow text to push the button down */
             margin-bottom: auto; 
             max-width: 90%; 
             margin-left: auto;
@@ -213,7 +208,7 @@
             padding: 0; 
         }
 
-        /* Button styles omitted for brevity */
+        /* Button Styling */
         .kiss-button { background-color: #f7a8b8; color: white; border: none; padding: 12px 25px; border-radius: 30px; font-weight: bold; font-size: 1.1em; cursor: pointer; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease; margin-top: 20px; }
         .kiss-button:hover { transform: scale(1.05) translateY(-2px); background-color: #ff9aa2; box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3); }
 
@@ -254,9 +249,9 @@
         <span class="floating-doodle" id="doodle-2">✨</span>
         <span class="floating-doodle" id="doodle-3">❤️</span>
         <span class="floating-doodle" id="doodle-4">🌙</span>
-        <span class="floating-doodle" id="doodle-5">❤️</span>
+        <span class="floating-doodle" id="doodle-5">❤️</span> 
         <span class="floating-doodle" id="doodle-6">🫶</span>
-        <span class="floating-doodle" id="doodle-7">🎀</span>
+        <span class="floating-doodle" id="doodle-7">🎀</span> 
         <span class="floating-doodle" id="doodle-8">😎</span>
         <span class="floating-doodle" id="doodle-9">😼</span>
 
@@ -327,7 +322,7 @@
                     navigateTo(stage3); 
                 }, 3000); 
             } else {
-                alert(" Hint: Username is the name of my fav and password is the date 2 day wait with hypens~");
+                alert("Oops! Wrong credentials. Hint: Username is 'Kartik' and password is the date '27-12-2024'.");
             }
         });
 
@@ -340,9 +335,10 @@
         });
 
         function sendKiss() {
+            // Recipient email address is set here
             const recipient = "ravennn7524@gmail.com"; 
             const subject = "A Digital Kiss from Your Cutie!";
-           
+            const body = "I clicked the kiss button on our secret website! Sending you a big, digital smooch! 😘";
             
             window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         }
